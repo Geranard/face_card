@@ -39,7 +39,7 @@ class Login:
                 wrong_cred_label = Label(text="Wrong Credentials", fg=RED, bg=BLACK, font=(FONT, 16))
                 wrong_cred_label.grid(column=0, row=4)
         except:
-            wrong_cred_label = Label(text="Wrong Credentials", fg=RED, bg=BLACK, font=(FONT, 16))
+            wrong_cred_label = Label(text="Enter Your Username and Password!", fg=RED, bg=BLACK, font=(FONT, 16))
             wrong_cred_label.grid(column=0, row=4)
 
     # ----------------------------------- login page ----------------------------------- #

@@ -1,1 +1,8 @@
-{}
+{
+    "asda": {
+        "DOB": "adasd",
+        "Name": "asd",
+        "Path": "../data/student_image/asda.png",
+        "Phone": "asdasd"
+    }
+}
