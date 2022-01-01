@@ -28,16 +28,6 @@ class ManageClass:
         with open("../data/class_student.json", mode="r") as file:
             self.class_dict = json.load(file)
 
-    # -------------------------------------------- search class ui -------------------------------------------- #
-    def search_class(self, *event):
-        query = str(self.search)
-        selections = []
-        for child in self.schedule_table.get_children():
-            if query in self.schedule_table.item(child)["values"]:
-                selections.append(child)
-
-        self.schedule_table.selection_set(selections)
-
     # -------------------------------------------- add class function -------------------------------------------- #
     def callback_add_class(self, *args):
         self.class_name = str(self.class_text.get())
@@ -166,13 +156,31 @@ class ManageClass:
         menu_page.menu_page()
 
     def class_info(self, *event):
-        select = self.schedule_table.focus()
-        class_code = dict(self.schedule_table.item(select))
-        class_code = class_code["values"][0]
+        try:
+            select = self.schedule_table.focus()
+            class_code = dict(self.schedule_table.item(select))
+            class_code = class_code["values"][0]
 
-        from view_class_info import ViewClassInfo
-        vci = ViewClassInfo(self.main_window, class_code)
-        vci.view_class_info()
+            from view_class_info import ViewClassInfo
+            vci = ViewClassInfo(self.main_window, class_code)
+            vci.view_class_info()
+        except:
+            return
+
+    # -------------------------------------------- search class ui -------------------------------------------- #
+    def search_class(self, *event):
+        query = str(self.search)
+        selections = []
+        for child in self.schedule_table.get_children():
+            item = self.schedule_table.item(child)["values"]
+            if query in item[0] or query in item[1] or query in item[2]:
+                selections.append(child)
+
+        self.schedule_table.selection_set(selections)
+        try:
+            self.schedule_table.see(str(selections[0]))
+        except:
+            pass
 
     # -------------------------------------------- manage class ui -------------------------------------------- #
     def manage_class(self):
@@ -220,7 +228,7 @@ class ManageClass:
         self.schedule_table.heading("Course", text="Course", anchor=CENTER)
         self.schedule_table.heading("Time", text="Time", anchor=CENTER)
 
-        self.schedule_table.bind("<Double-Button-1>", self.class_info)
+        self.main_window.bind("<Double-Button-1>", self.class_info)
 
         counter = 0
         for class_code in self.class_dict:
