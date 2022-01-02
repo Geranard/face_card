@@ -1,0 +1,7 @@
+tkinter
+tkcalendar
+json
+datetime
+collections
+Pillow
+shutil

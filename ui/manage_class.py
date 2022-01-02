@@ -1,4 +1,3 @@
-from os import SEEK_SET
 from tkinter import *
 import tkinter.ttk as tk
 import json

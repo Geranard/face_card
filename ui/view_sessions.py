@@ -1,4 +1,3 @@
-from os import stat
 from tkinter import *
 import json
 import tkinter.ttk as tk
