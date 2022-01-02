@@ -27,7 +27,7 @@ class ViewClassInfo:
         selections = []
         for child in self.student_table.get_children():
             item = self.student_table.item(child)["values"]
-            if query in item[0] or query in item[1] or query in item[2]:
+            if query.lower() in str(item[0]).lower() or query.lower() in str(item[1]).lower():
                 selections.append(child)
 
         self.student_table.selection_set(selections)

@@ -21,6 +21,7 @@ class ViewSessions:
         self.search_text = StringVar()
         self.search = ""
         self.session_data = {}
+        self.selections = []
 
     def callback_view_sessions(self, *args):
         self.search = str(self.search_text.get())
@@ -35,6 +36,20 @@ class ViewSessions:
     def leave_search(self, *args):
         if str(self.search_text.get()) == "":
             self.search_text.set("Search...")
+
+    def search_session(self, *event):
+        query = str(self.search)
+        selections = []
+        for child in self.session_table.get_children():
+            item = self.session_table.item(child)["values"]
+            if query.lower() in str(item[0]).lower() or query.lower() in str(item[1]).lower() or query.lower() in str(item[2]).lower():
+                selections.append(child)
+
+        self.session_table.selection_set(selections)
+        try:
+            self.session_table.see(str(selections[0]))
+        except:
+            pass
 
     def to_view_class_info(self):
         from view_class_info import ViewClassInfo
@@ -110,6 +125,21 @@ class ViewSessions:
         add_session_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
         add_session_button.grid(column=0, row=3, pady=(50, 0), sticky="E")
 
+    def selected(self, *event):
+        try:
+            id = int(self.session_table.identify("item", event[0].x, event[0].y))
+            children = self.session_table.get_children()
+            items = self.session_table.item(children[id])["values"]
+            date = str(items[0])
+            self.view_absent_page(date)
+        except:
+            return
+
+    def view_absent_page(self, date):
+        from view_absent import ViewAbsent
+        vap = ViewAbsent(self.main_window, self.class_code, date)
+        vap.view_absent_page()
+
     def view_sessions_page(self):
         # --------------- reset
         for widget in self.main_window.winfo_children():
@@ -129,8 +159,7 @@ class ViewSessions:
         search_bar.configure(background=GRAY, fg=BLACK, font=(FONT, 12))
         search_bar.grid(column=0, row=1, sticky="W", pady=(40, 20))
 
-        # self.main_window.bind("<Return>", self.search_student)
-        # self.main_window.bind("<Button-1>", self.selected)
+        self.main_window.bind("<Return>", self.search_session)
 
         # --------------- table page
         table_style = tk.Style()
@@ -189,9 +218,15 @@ class ViewSessions:
             elif d1 > d2:
                 status = "UPCOMING"
                 present = "-"
+            else:
+                status = "ONGOING"
+            
+            self.session_data[self.class_code]["Status"] = status
 
             self.session_table.insert(parent="", index="end", iid=counter, text="", values=(str(date), str(status), str(present)))
             counter += 1
+        
+        self.main_window.bind("<Double-Button-1>", self.selected)
 
         # --------------- back button
         back_button = Button(sessions_frame, text="Back", command=self.to_view_class_info, width=14, height=1)

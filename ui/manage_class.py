@@ -130,7 +130,7 @@ class ManageClass:
         add_new_button = Button(self.add_frame, text="Add New", command=self.add_new_schedule, width=14, height=1)
         add_new_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
         add_new_button.grid(column=2, row=10, sticky="W")
-        
+
         # --------------- add new enter
         self.main_window.bind("<Return>", self.add_new_schedule)
 
@@ -172,7 +172,7 @@ class ManageClass:
         selections = []
         for child in self.schedule_table.get_children():
             item = self.schedule_table.item(child)["values"]
-            if query in item[0] or query in item[1] or query in item[2]:
+            if query.lower() in item[0].lower() or query.lower() in item[1].lower() or query.lower() in item[2].lower():
                 selections.append(child)
 
         self.schedule_table.selection_set(selections)

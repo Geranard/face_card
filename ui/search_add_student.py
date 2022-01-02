@@ -25,7 +25,7 @@ class SearchAddStudent:
         self.selections.clear()
         for child in self.student_table.get_children():
             item = self.student_table.item(child)["values"]
-            if query in str(item[0]) or query in str(item[1]):
+            if query.lower() in str(item[0]).lower() or query.lower() in str(item[1]).lower():
                 self.selections.append(child)
 
         self.student_table.selection_set(self.selections)
