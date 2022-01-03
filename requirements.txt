@@ -2,16 +2,14 @@ tkinter
 tkcalendar
 json
 datetime
-collections
 Pillow
 shutil
 dlib
-threading
 requests
 numpy
 imutils
 face_recognition
-cv2
+opencv-python
 opencv-contrib-python
 cmake
 pickle
