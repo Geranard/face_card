@@ -9,7 +9,6 @@ PURPLE = "#552D96"
 GREEN = "#00FF00"
 GRAY = "#C4C4C4"
 FONT = "Poppins"
-
 class Login:
     def __init__(self, main_window):
         self.username = ""

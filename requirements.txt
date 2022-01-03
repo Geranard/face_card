@@ -8,7 +8,7 @@ dlib
 requests
 numpy
 imutils
-face_recognition
+face-recognition
 opencv-python
 opencv-contrib-python
 cmake
