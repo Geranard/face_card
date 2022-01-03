@@ -1,18 +1,2 @@
 {
-    "AA01": {
-        "Lecturer": "Yes",
-        "Session": {
-            "Monday 3-1-2022": {
-                "2440003695": 1,
-                "2440005164": 1,
-                "Status": "COMPLETED"
-            }
-        },
-        "StudentNIM": [
-            "2440003695",
-            "2440005164"
-        ],
-        "Subject": "Test",
-        "Time": "Friday 09.20 - 13.00"
-    }
 }
