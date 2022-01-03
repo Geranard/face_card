@@ -67,6 +67,7 @@ class SearchAddStudent:
             return
 
     def refresh(self):
+        self.selections.clear()
         self.search_add_student_page()
 
     def add_student(self):
@@ -138,9 +139,6 @@ class SearchAddStudent:
 
         with open("../data/student.json", mode="r") as file:
             student_data = json.load(file)
-        
-        # student data itu yang ada di kampus
-        # self.student itu yang ada di kelas
 
         classNIM = []
         allNIM = [nim for nim in student_data]
@@ -155,6 +153,8 @@ class SearchAddStudent:
                 name = student_data[nim]["Name"]
                 self.student_table.insert(parent="", index="end", iid=counter, text="", values=(f"{name}", f"{nim}"))
                 counter += 1
+        if len(allNIM) == 0:
+            self.student_table.insert(parent="", index="end", iid=counter, text="", values=("Please Enter Data to Continue", ""))
         
         # --------------- back button
         back_button = Button(search_frame, text="Back", command=self.to_view_class_info, width=14, height=1)
@@ -162,6 +162,11 @@ class SearchAddStudent:
         back_button.grid(column=0, row=3, pady=(50, 0), sticky="W")
 
         # --------------- add student button
-        add_student_button = Button(search_frame, text="Add", command=self.add_student, width=14, height=1)
-        add_student_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
-        add_student_button.grid(column=0, row=3, pady=(50, 0), sticky="E")
+        if len(allNIM) == 0:
+            add_student_button = Button(search_frame, text="Add", command=self.add_student, width=14, height=1)
+            add_student_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
+            add_student_button.grid(column=0, row=3, pady=(50, 0), sticky="E")
+        else:
+            add_student_button = Button(search_frame, text="Add", command=self.add_student, width=14, height=1)
+            add_student_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
+            add_student_button.grid(column=0, row=3, pady=(50, 0), sticky="E")

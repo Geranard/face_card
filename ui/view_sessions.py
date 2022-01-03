@@ -4,7 +4,6 @@ import tkinter.ttk as tk
 import tkinter.messagebox as tkm
 import datetime as dt
 from tkcalendar import *
-from collections import OrderedDict
 
 BLACK = "#1C2626"
 WHITE = "#FFFFFF"
@@ -22,6 +21,7 @@ class ViewSessions:
         self.search = ""
         self.session_data = {}
         self.selections = []
+        self.status = ""
 
     def callback_view_sessions(self, *args):
         self.search = str(self.search_text.get())
@@ -66,18 +66,18 @@ class ViewSessions:
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         
         students =  self.session_data[self.class_code]["StudentNIM"]
-
+        
         data = {nim: 0 for nim in students}
 
         date_key = f"{days[choosen_date.weekday()]} {choosen_date.day}-{choosen_date.month}-{choosen_date.year}"
 
         self.session_data[self.class_code]["Session"][date_key] = data
-        
+        self.session_data[self.class_code]["Session"][date_key]["Status"] = "UPCOMING"
         self.sort_by_date()
 
         with open("../data/class_student.json", mode="w") as file:
             file.write(json.dumps(self.session_data, indent=4))
-        
+
         tkm.showinfo(parent=self.main_window, title="FACE CARD MANAGER", message="DATA SUCCESSFULLY ADDED!")
 
         self.view_sessions_page()
@@ -94,11 +94,18 @@ class ViewSessions:
         choosen_date = dt.datetime(year, month, day)
         month = str(choosen_date.strftime("%B")).upper()
 
-        msgbox = tkm.askquestion(parent=self.main_window, title="FACE CARD MANAGER", message=f"ADD NEW SESSION TO {self.class_code} ON {day} {month} {year}?")
-        if msgbox == "no":
+        now = dt.datetime.now()
+        now = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        if choosen_date < now:
+            msgbox = tkm.showwarning(parent=self.main_window, title="FACE CARD MANAGER", message="CANNOT CHOOSE ELAPSED DATE!")
             return
-        elif msgbox == "yes":
-            self.add_session_data(choosen_date)
+
+        else:
+            msgbox = tkm.askquestion(parent=self.main_window, title="FACE CARD MANAGER", message=f"ADD NEW SESSION TO {self.class_code} ON {day} {month} {year}?")
+            if msgbox == "no":
+                return
+            elif msgbox == "yes":
+                self.add_session_data(choosen_date)
 
     def add_session(self):
         for widget in self.main_window.winfo_children():
@@ -131,6 +138,7 @@ class ViewSessions:
             children = self.session_table.get_children()
             items = self.session_table.item(children[id])["values"]
             date = str(items[0])
+            self.status = str(items[1])
             self.view_absent_page(date)
         except:
             return
@@ -201,32 +209,39 @@ class ViewSessions:
         year = now.year
         counter = 0
         for date in session_dates:
-            status = ""
+            self.status = self.session_data[self.class_code]["Session"][date]["Status"]
             present = "0"
             for nim in sessions[date]:
                 if sessions[date][nim] == 1:
                     present = f"{int(present) + 1}"
-            
+
             temp_date = date
             temp_date = date.rsplit(" ")[1].rsplit("-")
             d1 = dt.datetime(int(temp_date[2]), int(temp_date[1]), int(temp_date[0]))
             d2 = dt.datetime(year, month, day)
 
-            if d1 < d2:
-                status = "COMPLETED"
-            # yang on going jangan lupa
-            elif d1 > d2:
-                status = "UPCOMING"
+            if d1 > d2:
                 present = "-"
-            else:
-                status = "ONGOING"
-            
-            self.session_data[self.class_code]["Status"] = status
+            elif d1 < d2:
+                self.status = "COMPLETED"
+            elif d1 == d2 and self.status == "UPCOMING":
+                self.status = "ONGOING"
 
-            self.session_table.insert(parent="", index="end", iid=counter, text="", values=(str(date), str(status), str(present)))
+            self.session_table.insert(parent="", index="end", iid=counter, text="", values=(str(date), str(self.status), str(present)))
             counter += 1
+
+            self.session_data[self.class_code]["Session"][date]["Status"] = self.status
         
+        if len(session_dates) == 0:
+            self.session_table.insert(parent="", index="end", iid=counter, text="", values=("", "Please Enter Data to Continue", ""))
+
+        with open("../data/class_student.json", mode="w") as file:
+            file.write(str(json.dumps(self.session_data, indent=4)))
+
         self.main_window.bind("<Double-Button-1>", self.selected)
+
+        with open("../data/student.json", mode="r") as file:
+            temp = json.load(file)
 
         # --------------- back button
         back_button = Button(sessions_frame, text="Back", command=self.to_view_class_info, width=14, height=1)
@@ -234,6 +249,11 @@ class ViewSessions:
         back_button.grid(column=0, row=3, pady=(50, 0), sticky="W")
 
         # --------------- add student button
-        add_session_button = Button(sessions_frame, text="Add Session", command=self.add_session, width=14, height=1)
-        add_session_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
-        add_session_button.grid(column=0, row=3, pady=(50, 0), sticky="E")
+        if len(temp) == 0:
+            add_session_button = Button(sessions_frame, text="Add Session", command="", width=14, height=1)
+            add_session_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
+            add_session_button.grid(column=0, row=3, pady=(50, 0), sticky="E")
+        else:
+            add_session_button = Button(sessions_frame, text="Add Session", command=self.add_session, width=14, height=1)
+            add_session_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
+            add_session_button.grid(column=0, row=3, pady=(50, 0), sticky="E")

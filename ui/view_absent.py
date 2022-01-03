@@ -1,10 +1,7 @@
 from tkinter import *
 import json
 import tkinter.ttk as tk
-import tkinter.messagebox as tkm
-import datetime as dt
 from tkcalendar import *
-from collections import OrderedDict
 
 BLACK = "#1C2626"
 WHITE = "#FFFFFF"
@@ -58,7 +55,7 @@ class ViewAbsent:
     def view_absent_page(self):
         for widget in self.main_window.winfo_children():
             widget.destroy()
-        
+
         view_frame = Frame(self.main_window, bg=BLACK)
         view_frame.grid(column=0, row=0)
 
@@ -108,15 +105,39 @@ class ViewAbsent:
 
         counter = 0
         for nim in nim_absent:
+            if str(nim) == "Status":
+                continue
+
             stats = "Absent"
             if str(nim_absent[str(nim)]) == "1":
                 stats = "Present"
+
             self.absent_table.insert(parent="", index="end", iid=counter, text="", values=(str(student_name[f"{nim}"]), str(nim), str(stats)))
             counter += 1
+        
+        if len(nim_absent) == 0:
+            self.absent_table.insert(parent="", index="end", iid=counter, text="", values=("", "Please Enter Data to Continue", ""))
 
         self.main_window.bind("<Return>", self.search_student)
 
         # --------------- back button
         back_button = Button(view_frame, text="Back", command=self.to_view_session, width=14, height=1)
         back_button.configure(background=BLACK, fg=WHITE, font=(FONT, 12, "bold"))
-        back_button.grid(column=0, row=3, pady=(50, 0), sticky="EW")
+
+        status = class_data[self.class_code]["Session"][self.date]["Status"]
+
+        if status != "ONGOING":
+            back_button.grid(column=0, row=3, pady=(50, 0), sticky="EW")
+
+        else:
+            back_button.grid(column=0, row=3, pady=(50, 0), sticky="W")
+
+            # --------------- absent button
+            scan_button = Button(view_frame, text="Start Scanning", command=self.scan_faces, width=14, height=1)
+            scan_button.configure(background=PURPLE, fg=WHITE, font=(FONT, 12, "bold"))
+            scan_button.grid(column=0, row=3, pady=(50, 0), sticky="E")
+    
+    def scan_faces(self):
+        from face_scanner import FaceScanner
+        fsp = FaceScanner(self.main_window, self.class_code, self.date)
+        fsp.face_scanner_page()

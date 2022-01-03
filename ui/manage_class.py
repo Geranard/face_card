@@ -235,6 +235,9 @@ class ManageClass:
             time_stamp = self.class_dict[class_code]["Time"]
             self.schedule_table.insert(parent="", index="end", iid=counter, text="", values=(f"{class_code}", f"{subject}", f"{time_stamp}"))
             counter += 1
+        
+        if len(self.class_dict) == 0:
+            self.schedule_table.insert(parent="", index="end", iid=counter, text="", values=("", "Please Enter Data to Continue", ""))
 
         # --------------- back button
         back_button = Button(manage_class_frame, text="Back", command=self.to_menu, width=14, height=1)

@@ -164,7 +164,7 @@ class ViewClassInfo:
             student_data = json.load(file)
         
         availableNIM = [nim for nim in self.info_dict["StudentNIM"]]
-        
+
         self.student = {}
 
         counter = 0
@@ -174,6 +174,9 @@ class ViewClassInfo:
                 self.student[nim] = name
                 self.student_table.insert(parent="", index="end", iid=counter, text="", values=(f"{name}", f"{nim}"))
                 counter += 1
+
+        if len(studentNIM) == 0:
+            self.student_table.insert(parent="", index="end", iid=counter, text="", values=("Please Enter Data to Continue", ""))
 
         # --------------- back button
         back_button = Button(info_frame, text="Back", command=self.to_manage_schedule, width=14, height=1)

@@ -38,7 +38,7 @@ class AddStudent:
         self.phone_text.trace_add("write", callback=self.callback_add_student)
 
     def open_file(self):
-        self.pict_path = str(askopenfilename(filetypes=[("Image Files", "*")]))
+        self.pict_path = str(askopenfilename(filetypes=[("Image Files", ".jpg")]))
         try:
             image = Image.open(self.pict_path)
             resize_image = image.resize((200, 224))
@@ -59,7 +59,7 @@ class AddStudent:
         if len(self.name)<=0 or len(self.id)<=0 or len(self.dob)<=0 or len(self.phone)<=0:
             return self.show_error("Please Complete the Field!", 0, 7)
             
-        destination = f"../data/student_image/{self.id}.png"
+        destination = f"../data/student_image/{self.id}.jpg"
         print(self.pict_path)
         shutil.copyfile(self.pict_path, destination)
 

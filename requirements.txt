@@ -5,3 +5,14 @@ datetime
 collections
 Pillow
 shutil
+dlib
+threading
+requests
+numpy
+imutils
+face_recognition
+cv2
+opencv-contrib-python
+cmake
+pickle
+glob2

@@ -1,62 +1,14 @@
 {
-    "2440005164": {
-        "DOB": "13 March 2002",
-        "Name": "Regie Tjandranata",
-        "Path": "NULL",
-        "Phone": "08128139559"
-    },
     "2440003695": {
         "DOB": "16 December 2002",
         "Name": "Tricia Estella",
-        "Path": "NULL",
-        "Phone": "08888888888"
+        "Path": "../data/student_image/2440003695.jpg",
+        "Phone": "08970393872"
     },
-    "2440005233": {
-        "DOB": "21 June 2002",
-        "Name": "Budi",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2440005201": {
-        "DOB": "12 August 2002",
-        "Name": "Indah",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2440004571": {
-        "DOB": "28 July 2002",
-        "Name": "Raharjo",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2401962346": {
-        "DOB": "16 April 2002",
-        "Name": "Semangka",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2401962347": {
-        "DOB": "16 April 2002",
-        "Name": "Semangka",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2401961231": {
-        "DOB": "16 April 2002",
-        "Name": "Melon",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2400012312": {
-        "DOB": "16 April 2002",
-        "Name": "Apel",
-        "Path": "NULL",
-        "Phone": "012313213123"
-    },
-    "2400129382": {
-        "DOB": "16 April 2002",
-        "Name": "Jancok",
-        "Path": "NULL",
-        "Phone": "012313213123"
+    "2440005164": {
+        "DOB": "13 March 2002",
+        "Name": "Regie Tjandranata",
+        "Path": "../data/student_image/2440005164.jpg",
+        "Phone": "08128139559"
     }
 }
