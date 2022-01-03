@@ -1,7 +1,4 @@
-tkinter
-tkcalendar
-json
-datetime
+tkcalendar2
 Pillow
 shutil
 dlib

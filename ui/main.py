@@ -1,6 +1,5 @@
 from tkinter import *
 from login import Login
-import os
 
 BLACK = "#1C2626"
 WHITE = "#FFFFFF"

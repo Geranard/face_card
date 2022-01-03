@@ -60,7 +60,6 @@ class AddStudent:
             return self.show_error("Please Complete the Field!", 0, 7)
             
         destination = f"../data/student_image/{self.id}.jpg"
-        print(self.pict_path)
         shutil.copyfile(self.pict_path, destination)
 
         data = {

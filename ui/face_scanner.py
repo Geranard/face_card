@@ -25,66 +25,69 @@ class FaceScanner:
         self.camera = cv.VideoCapture(0)
 
     def cam_to_tk(self):
-        while True:
-            return_value, frame = self.camera.read()
-            frame = imutils.resize(frame, width=500, height=300)
+        try:
+            while True:
+                return_value, frame = self.camera.read()
+                frame = imutils.resize(frame, width=500, height=300)
 
-            rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-            rgb_frame = cv.resize(frame, (0, 0), None, 0.25, 0.25)
+                rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+                rgb_frame = cv.resize(frame, (0, 0), None, 0.25, 0.25)
 
-            student = {"Name": "Unknown", "NIM": "Unknown"}
-            cam_face_loc = face_recognition.face_locations(rgb_frame)
-            cam_face_encode = face_recognition.face_encodings(rgb_frame, cam_face_loc)
+                student = {"Name": "Unknown", "NIM": "Unknown"}
+                cam_face_loc = face_recognition.face_locations(rgb_frame)
+                cam_face_encode = face_recognition.face_encodings(rgb_frame, cam_face_loc)
 
-            for face in cam_face_encode:
-                match = face_recognition.compare_faces(self.known_face_encodes, face)
-                face_dist = face_recognition.face_distance(self.known_face_encodes, face)
-                match_index = np.argmin(face_dist)
+                for face in cam_face_encode:
+                    match = face_recognition.compare_faces(self.known_face_encodes, face)
+                    face_dist = face_recognition.face_distance(self.known_face_encodes, face)
+                    match_index = np.argmin(face_dist)
 
-                if match[match_index]:
-                    student = self.known_face_names[match_index]
+                    if match[match_index]:
+                        student = self.known_face_names[match_index]
 
-            # self.absent.append()
-            if not student["NIM"] in self.absent:
-                self.absent.append(str(student['NIM']))
+                if not student["NIM"] in self.absent:
+                    self.absent.append(str(student['NIM']))
 
-            for top, right, bottom, left in cam_face_loc:
-                top, right, bottom, left = top*4, right*4, bottom*4, left*4
-                cv.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-                cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
-                font = cv.FONT_HERSHEY_DUPLEX
-                cv.putText(frame, student["Name"], (left+6, bottom-6), font, 1.0, (255, 255, 255), 1)
+                for top, right, bottom, left in cam_face_loc:
+                    top, right, bottom, left = top*4, right*4, bottom*4, left*4
+                    cv.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+                    cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
+                    font = cv.FONT_HERSHEY_DUPLEX
+                    cv.putText(frame, student["Name"], (left+6, bottom-6), font, 1.0, (255, 255, 255), 1)
 
-            cv.imshow("PLEASE PRESS X TO TERMINATE THIS PAGE", frame)
+                cv.imshow("PLEASE PRESS X TO TERMINATE THIS PAGE", frame)
 
-            if cv.waitKey(1) & 0xFF == ord("x"):
-                msgbox = tkm.askquestion(parent=self.main_window, title="FACE CARD MANAGER", message=f"ARE YOU SURE WANT TO TERMINATE ABSENT PAGE? (CANNOT UNDO)")
-                if msgbox == "no":
-                    pass
-                elif msgbox == "yes":
-                    self.camera.release()
-                    cv.destroyAllWindows()
-                    break
-        
-        with open("../data/class_student.json", mode="r") as file:
-            class_data = json.load(file)
+                if cv.waitKey(1) & 0xFF == ord("x"):
+                    msgbox = tkm.askquestion(parent=self.main_window, title="FACE CARD MANAGER", message=f"ARE YOU SURE WANT TO TERMINATE ABSENT PAGE? (CANNOT UNDO)")
+                    if msgbox == "no":
+                        pass
+                    elif msgbox == "yes":
+                        self.camera.release()
+                        cv.destroyAllWindows()
+                        break
+            
+            with open("../data/class_student.json", mode="r") as file:
+                class_data = json.load(file)
 
-        nimstudent = class_data[self.class_code]["Session"][self.date]
+            nimstudent = class_data[self.class_code]["Session"][self.date]
 
-        for nim in self.absent:
-            try:
-                nimstudent[nim]
-                class_data[self.class_code]["Session"][self.date][nim] = 1
-            except:
-                continue
+            for nim in self.absent:
+                try:
+                    nimstudent[nim]
+                    class_data[self.class_code]["Session"][self.date][nim] = 1
+                except:
+                    continue
 
-        class_data[self.class_code]["Session"][self.date]["Status"] = "COMPLETED"
+            class_data[self.class_code]["Session"][self.date]["Status"] = "COMPLETED"
 
-        with open("../data/class_student.json", mode="w") as file:
-            file.write(str(json.dumps(class_data, indent=4, sort_keys=True)))
+            with open("../data/class_student.json", mode="w") as file:
+                file.write(str(json.dumps(class_data, indent=4, sort_keys=True)))
 
-        for widget in self.main_window.winfo_children():
-            widget.destroy()
+            for widget in self.main_window.winfo_children():
+                widget.destroy()
+                
+        except:
+            pass
         
         from view_absent import ViewAbsent
         vap = ViewAbsent(self.main_window, self.class_code, self.date)
