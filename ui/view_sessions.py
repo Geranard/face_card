@@ -85,11 +85,11 @@ class ViewSessions:
     def get_date(self):
         self.calendar_date = str(self.calendar.get_date())
         self.calendar_date = self.calendar_date.rsplit("/")
-        self.calendar_date[2] = f"20{self.calendar_date[2]}"
+        self.calendar_date[2] = f"{self.calendar_date[2]}"
         choosen_date = self.calendar_date
 
-        day = int(choosen_date[1])
-        month = int(choosen_date[0])
+        day = int(choosen_date[0])
+        month = int(choosen_date[1])
         year = int(choosen_date[2])
         choosen_date = dt.datetime(year, month, day)
         month = str(choosen_date.strftime("%B")).upper()

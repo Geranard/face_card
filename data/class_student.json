@@ -1,2 +1,20 @@
 {
+    "asdad": {
+        "Lecturer": "asdad",
+        "Session": {
+            "Wednesday 5-1-2022": {
+                "asdas": 0,
+                "Status": "ONGOING"
+            },
+            "Sunday 1-5-2022": {
+                "asdas": 0,
+                "Status": "UPCOMING"
+            }
+        },
+        "StudentNIM": [
+            "asdas"
+        ],
+        "Subject": "adasd",
+        "Time": "asdadad"
+    }
 }

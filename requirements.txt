@@ -1,6 +1,6 @@
-tkcalendar2
+tkcalendar
 Pillow
-shutil
+shutils
 dlib
 requests
 numpy
