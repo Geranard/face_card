@@ -9,5 +9,5 @@ face-recognition
 opencv-python
 opencv-contrib-python
 cmake
-pickle
 glob2
+imutils
