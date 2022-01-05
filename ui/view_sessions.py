@@ -86,8 +86,6 @@ class ViewSessions:
         self.calendar_date = str(self.calendar.get_date())
         self.calendar_date = self.calendar_date.rsplit("/")
         self.calendar_date[2] = f"{self.calendar_date[2]}"
-        if len(self.calendar_date[2])!=4:
-            self.calendar_date[2] = f"20{self.calendar_date[2]}"
         choosen_date = self.calendar_date
 
         day = int(choosen_date[0])
@@ -121,7 +119,7 @@ class ViewSessions:
         select_date_label = Label(calendar_frame, text=f"SELECT DATE", fg=WHITE, bg=BLACK, font=(FONT, 35, "bold"))
         select_date_label.grid(column=0, row=0, sticky="EW", padx=(200, 220), pady=(0, 80))
 
-        self.calendar = Calendar(calendar_frame, selectmode="day", year=now.year, month=now.month, day=now.day)
+        self.calendar = Calendar(calendar_frame, selectmode="day", year=now.year, month=now.month, day=now.day, date_pattern="dd/MM/yyyy")
         self.calendar.grid(column=0, row=1, sticky="EW")
 
         # --------------- back button
