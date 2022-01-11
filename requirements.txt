@@ -1,12 +1,11 @@
 tkcalendar
 Pillow
 shutils
-cmake
-dlib
 requests
-numpy
 opencv-python
 opencv-contrib-python
+cmake
+dlib
 face-recognition
 glob2
 imutils
